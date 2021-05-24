@@ -1,0 +1,16 @@
+class Solution {
+    public int maxSubArray(int[] nums) {
+        if (nums == null || nums.length == 0) return 0;
+        int max = nums[0];
+        int currentSum = nums[0];
+        for (int i = 1; i < nums.length; i++) {
+            currentSum = Math.max(currentSum + nums[i], nums[i]);
+            max = Math.max(currentSum, max);
+        }
+        return max;
+    }
+}
+
+/*
+1. Corner case when first element is negative. How to calculate the currentSum is the key
+*/
