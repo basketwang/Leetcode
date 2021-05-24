@@ -1,0 +1,48 @@
+class Solution {
+    public String addStrings(String num1, String num2) {
+        if ( num1 == null || num1.length() == 0) return num2;
+        if ( num2 == null || num2.length() == 0) return num1;
+        if (num1.length() < num2.length()) {
+            return addStrings(num2, num1);
+        }
+        // ensure num1.length() > num2.length()
+        int len1 = num1.length();
+        int len2 = num2.length();
+        StringBuilder sb = new StringBuilder();
+        char carry = '0';
+        for (int i = 1; i <= len2; i++) {
+            char c1 = num1.charAt(len1-i);
+            char c2 = num2.charAt(len2-i);
+            sb.insert(0, addSum(c1, c2, carry));
+            carry = addCarry(c1, c2, carry);
+        }
+        for (int i = len2+1; i <= len1; i++) {
+            char c1 = num1.charAt(len1-i);
+            sb.insert(0, addSum(c1, '0', carry));
+            carry = addCarry(c1, '0', carry);
+        }
+        if (carry == '1') {
+            sb.insert(0, "1");
+        } 
+        return sb.toString();
+    }
+    
+    private char addSum(char a, char b, char c) {
+        int ia = a - '0';
+        int ib = b - '0';
+        int ic = c - '0';
+        return (char)((ia + ib + ic)%10 + '0');
+        
+    }
+
+    private char addCarry(char a, char b, char c) {
+        int ia = a - '0';
+        int ib = b - '0';
+        int ic = c - '0';
+        return (char)((ia + ib + ic)/10 + '0');
+    }
+}
+
+/*
+   1. StringBuilder reverse() can be used instead of always insert in head
+*/
