@@ -1,0 +1,31 @@
+class Solution {
+    public boolean isValid(String s) {
+        if (s == null || s.length() < 2) {
+            return false;
+        }
+        Map<Character, Character> map = new HashMap();
+        map.put(')', '(');
+        map.put(']', '[');
+        map.put('}', '{');
+        Deque<Character> stack = new ArrayDeque();
+        for (char c : s.toCharArray()) {
+            if ( c == '(' || c == '[' || c == '{') {
+                stack.push(c);
+            } else {
+                if (stack.isEmpty()) {
+                    return false;
+                }
+                char top = stack.pop();
+                if (map.get(c) != top) {
+                    return false;
+                }
+            }
+        }
+        return stack.isEmpty();
+    }
+}
+
+/*
+1. Deque is a prefered way to stack. ArrayDeque is one of implementation of Deque interface
+2. Build a map to pair the open and close parentheses  
+ */
