@@ -1,0 +1,55 @@
+class Solution {
+    public List<String> subdomainVisits(String[] cpdomains) {
+        if (cpdomains == null || cpdomains.length == 0) {
+            return null;
+        }
+        HashMap<String, Integer> map = new HashMap();
+        for (String domain: cpdomains) {
+            String[] strs = domain.split(" ");
+            String[] subdomains = getSubdomains(strs[1]);
+            for (String subdomain : subdomains) {
+                if (map.containsKey(subdomain)) {
+                    map.put(subdomain, map.get(subdomain) + Integer.parseInt(strs[0]));
+                } else {
+                    map.put(subdomain, Integer.parseInt(strs[0]));
+                }
+            }
+        }
+        List<String> res = new ArrayList();
+        for(Map.Entry<String, Integer> entry : map.entrySet()) {
+            String key = entry.getKey();
+            Integer val = entry.getValue();
+            res.add(String.valueOf(val) + " " + key);
+        }
+        return res;
+    }
+
+    private String[] getSubdomains(String domain) {
+        String[] substr = domain.split("\\.");
+        int n = substr.length;
+        String[] res = new String[n];
+        res[n-1] = substr[n-1];
+        for (int i = n - 2; i >= 0; i--) {
+            res[i] = substr[i] + "." + res[i+1];
+        }
+        return res;
+    }
+}
+
+/*
+   String manipulation:
+   1. String split. by dot: "\\.", by space: " " or "\\s+"
+   2. String concat. String + String
+
+   HashMap:
+   1. Iterate map:
+    a. for (Map.Entry<X, Y> entry: map.entrySet())
+    b. for (X key : map.keySet())
+   2. Check map key exist then:
+    a. if (map.containsKey(k)) 
+    b. map.getOrDefault(k, default val)
+
+    Type Conversion:
+    String to Integer: Integer.parseInt(string s)
+    Integer to String: String.valueOf(int i)
+*/
