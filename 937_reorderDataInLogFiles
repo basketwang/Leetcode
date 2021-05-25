@@ -1,0 +1,47 @@
+class Solution {
+    public String[] reorderLogFiles(String[] logs) {
+        if (logs == null || logs.length < 2) return logs;
+        List<String> letterLogs = new ArrayList();
+        String[] result = new String[logs.length];
+        int tail = logs.length - 1;
+        for (int i = logs.length-1; i >= 0; i--) {
+            String log = logs[i];
+            char firstChar = log.split("\\s+")[1].charAt(0);
+            if (firstChar >= '0' && firstChar <= '9') {
+                // digit-logs
+                result[tail--] = log;
+            } else {
+                // letter-logs
+                letterLogs.add(log);
+            }
+        }
+        letterLogs.sort(new logComparator());
+        int head = 0;
+        for (String log : letterLogs) {
+            result[head++] = log;
+        }
+        return result;
+    }
+    class logComparator implements Comparator<String> {
+        public int compare(String a, String b) {
+            String[] aSplit = a.split("\\s+", 2);
+            String[] bSplit = b.split("\\s+", 2);
+            if (aSplit[1].equals(bSplit[1])) {
+                return aSplit[0].compareTo(bSplit[0]);
+            } else {
+                return aSplit[1].compareTo(bSplit[1]);
+            }
+        }
+    }
+}
+
+/*
+String manipulation:
+1. str.split(reg, limit) 
+2. str.indexOf(char): Here can't be regular expression
+3. String compare lexicographically by compareTo and compareToIgnoreCase
+Comparator: 
+1. Implementation
+2. return a < b or a - b : Ascending order, a before b
+
+*/
