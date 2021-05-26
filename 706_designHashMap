@@ -1,0 +1,70 @@
+class MyHashMap {
+    class Pair {
+        public int key;
+        public int value;
+        public Pair(int k, int v) {
+            key = k;
+            value = v;
+        }
+    }
+    static int hash_size = 2069;
+    /** Initialize your data structure here. */
+    private ArrayList<Pair>[] hashArray;
+    public MyHashMap() {
+        hashArray = new ArrayList[hash_size];
+        for (int i = 0; i < hash_size; i++) {
+            hashArray[i] = new ArrayList<Pair>();
+        }
+    }
+    
+    /** value will always be non-negative. */
+    public void put(int key, int value) {
+        Pair target = null;
+        List<Pair> pairList = hashArray[key % hash_size];
+        for (Pair pair : pairList ){
+            if (pair.key == key) {
+                target = pair;
+                break;
+            }
+        }
+        if (target != null) {
+            target.value = value;
+        } else {
+            Pair entry = new Pair(key, value);
+            hashArray[key % hash_size].add(entry);
+        }
+    }
+    
+    /** Returns the value to which the specified key is mapped, or -1 if this map contains no mapping for the key */
+    public int get(int key) {
+        List<Pair> pairList = hashArray[key % hash_size];
+        for (Pair pair : pairList ){
+            if (pair.key == key) {
+                return pair.value;
+            }
+        }
+        return -1;
+    }
+    
+    /** Removes the mapping of the specified value key if this map contains a mapping for the key */
+    public void remove(int key) {
+        Pair target = null;
+        List<Pair> pairList = hashArray[key % hash_size];
+        for (Pair pair : pairList ){
+            if (pair.key == key) {
+                target = pair;
+                break;
+            }
+        }
+        if (target != null) {
+            pairList.remove(target);
+        }
+    }
+}
+
+/*
+1. Syntax of creating a new class, its constructor, property accessiability
+2. Attention: put has to check if pair has already existed first
+3. hash_size is better to be a primitive number
+4. Understand how hash table works fundamentally 
+*/
