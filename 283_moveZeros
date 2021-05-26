@@ -1,0 +1,19 @@
+class Solution {
+    public void moveZeroes(int[] nums) {
+        if (nums == null || nums.length < 2) return;
+        int currentIndex = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] != 0) {
+                nums[currentIndex] = nums[i];
+                currentIndex++;
+            }
+        }
+        for (int i = currentIndex; i < nums.length; i++) {
+            nums[i] = 0;
+        }
+    }
+}
+
+/*
+   Remember to reset all remaining number to 0
+   */
