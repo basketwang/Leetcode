@@ -1,0 +1,28 @@
+class Solution {
+    public String addBinary(String a, String b) {
+        if (a == null || b == null) return null;
+        // make sure a is longer than b
+        if (a.length() < b.length()) return addBinary(b, a);
+        int carry = 0;
+        StringBuilder sb = new StringBuilder();
+        for (int indexFromEnd = 0; indexFromEnd < a.length(); indexFromEnd++) {
+            int aIdx = a.length()-1-indexFromEnd;
+            int bIdx = b.length()-1-indexFromEnd;
+            if (a.charAt(aIdx) == '1') carry++;
+            if (bIdx >= 0 && b.charAt(bIdx) == '1') carry++;
+            if (carry % 2 == 1) {
+                sb.insert(0,'1');
+            } else {
+                sb.insert(0, '0');
+            }
+            carry = carry / 2;
+        }
+        if (carry % 2 == 1) sb.insert(0,'1');
+        return sb.toString();
+    }
+}
+
+/*
+Use "carry" to calculate current bit and also the carry bit
+DO NOT miss the most significant bit
+   */
