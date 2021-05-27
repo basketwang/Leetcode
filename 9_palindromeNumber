@@ -1,0 +1,52 @@
+class Solution {
+    public boolean isPalindrome(int x) {
+        if (x < 0) return false;
+        
+        String str = String.valueOf(x);
+        int start = 0;
+        int end = str.length()-1;
+        while (start < end){
+            if (str.charAt(start) != str.charAt(end)) return false;
+            start++;
+            end--;
+        }
+        return true;
+    }
+}
+class Solution {
+    public boolean isPalindrome(int x) {
+        if (x < 0) return false;
+        int revertX = 0;
+        int tmpX = x;
+        while (tmpX != 0) {
+            int quotient = tmpX % 10;
+            revertX = revertX * 10 + quotient;
+            tmpX /= 10;
+        }
+        return x == revertX;
+    }
+}
+/* 
+1. Note the following wrong solution
+2. Instead of converting to string, we can also revert half of the integer
+   (revert the whole integer maybe more straightforward)
+*/
+
+/** Wrong Answer. Can't solve like 1000021
+class Solution {
+    public boolean isPalindrome(int x) {
+        if (x < 0) return false;
+        int mostSig = 1;
+        while(x / mostSig > 9) {
+            mostSig *= 10;
+        }
+        while (x > 9) {
+            if (x/mostSig != x%10) return false;
+            x = x % mostSig;
+            x = x / 10;
+            mostSig /= 100;
+        }
+        return true;
+    }
+}
+**/
