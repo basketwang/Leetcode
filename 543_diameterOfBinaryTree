@@ -1,0 +1,23 @@
+class Solution {
+    public int diameterOfBinaryTree(TreeNode root) {
+        Integer max = 0;
+        int[] result = maxLengthByTheNode(root);
+        return result[1];
+    }
+    // Return two numbers: 
+    // 1. depth of current tree with the node as root
+    // 2. max length(diameter) of current tree. The path may not include the root.
+    private int[] maxLengthByTheNode(TreeNode node) {
+        if (node == null) return new int[]{-1, 0};
+        int[] left = maxLengthByTheNode(node.left);
+        int[] right = maxLengthByTheNode(node.right);
+        int maxByTheNode = Math.max(left[0], right[0]) + 1;
+        int maxAll = Math.max(Math.max(left[1], right[1]), left[0]+right[0]+2);
+        return new int[] { maxByTheNode, maxAll};
+    }
+}
+
+
+/*
+Integer is an object but it's immutable. Passing it as argument won't work
+*/
