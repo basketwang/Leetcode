@@ -1,0 +1,20 @@
+class Solution {
+    public int climbStairs(int n) {
+        if (n <= 0) return 0;
+        if (n == 1) return 1;
+        if (n == 2) return 2;
+        
+        int oneStepBehind = 2;
+        int twoStepBehind = 1;
+        for (int i = 3; i <= n; i++) {
+            int currentResult = oneStepBehind + twoStepBehind;
+            twoStepBehind = oneStepBehind;
+            oneStepBehind = currentResult;
+        }
+        return oneStepBehind;
+    }
+}
+
+/*
+initial state includes both 1 and 2. 2 can't be derived by 1 and 0;
+   */
