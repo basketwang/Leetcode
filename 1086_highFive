@@ -1,0 +1,39 @@
+class Solution {
+    public int[][] highFive(int[][] items) {
+        if (items == null || items.length == 0 || 
+            items[0] == null || items[0].length == 0) return null;
+        Map<Integer, PriorityQueue<Integer>> map = new HashMap();
+        for (int[] item : items) {
+            if (!map.containsKey(item[0])) {
+                map.put(item[0], new PriorityQueue<Integer>());
+            }
+            PriorityQueue pqueue = map.get(item[0]);
+            pqueue.offer(item[1]);
+            if (pqueue.size() > 5) {
+                pqueue.poll();
+            }
+        }
+        
+        ArrayList<int[]> result = new ArrayList<>();
+        for (Integer key : map.keySet()) {
+            PriorityQueue pqueue = map.get(key);
+            int avg = 0;
+            while(!pqueue.isEmpty()) {
+                avg = avg + (int) pqueue.poll();
+            }
+            avg /= 5;
+            result.add(new int[]{key, avg});
+        }
+
+        result.sort((a, b) -> a[0] - b[0]);
+        int[][] solutionArray = new int[result.size()][2];
+        return result.toArray(solutionArray);
+    }
+}
+/* 
+   1. PriorityQueue
+   2. List<int[]>
+   3. comparator: (a, b) -> a[0] - b[0]
+   4. List to array: result.toArray(solutionArray)
+
+   */
