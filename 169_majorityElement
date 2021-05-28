@@ -1,0 +1,24 @@
+class Solution {
+    public int majorityElement(int[] nums) {
+        if (nums == null || nums.length == 0) return 0;
+        int count = 0;
+        int result = 0;
+        for (int num : nums) {
+            if ( num != result ) {
+                if (count > 0) {
+                    count--;
+                } else {
+                    result = num;
+                    count = 1;
+                }
+            } else {
+                count ++;
+            }
+        }
+        return result;
+    }
+}
+
+/*
+  Mark the way to handle majority
+   */
