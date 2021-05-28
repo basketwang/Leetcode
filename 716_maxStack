@@ -1,0 +1,81 @@
+class MaxStack {
+    class Node {
+        private int value;
+        public Node (int val) {
+            value = val;
+        }
+    }
+    /** initialize your data structure here. */
+    private LinkedList<Node> list;
+    private TreeMap<Integer, LinkedList<Node>> treemap;
+    
+    public MaxStack() {
+        list = new LinkedList();
+        treemap = new TreeMap<Integer, LinkedList<Node>>();
+    }
+    
+    public void push(int x) {
+        Node newNode= new Node(x);
+        list.add(newNode);
+        if (!treemap.containsKey(x)) {
+            LinkedList<Node> newList= new LinkedList<Node>();
+            newList.add(newNode);
+            treemap.put(x, newList);
+        } else {
+            treemap.get(x).add(newNode);
+        }
+    }
+    
+    public int pop() {
+        if (!list.isEmpty()) {
+            Node node= list.removeLast();
+            List<Node> treeList = treemap.get(node.value);
+            treeList.remove(node);
+            if (treeList.isEmpty()) {
+                treemap.remove(node.value);
+            }
+            return node.value;
+        } else {
+            return 0;
+        }
+    }
+    
+    public int top() {
+        if (!list.isEmpty()) {
+            Node node= list.getLast();
+            return node.value;
+        } 
+        return 0;
+    }
+    
+    public int peekMax() {
+        if (!treemap.isEmpty()) {
+            return treemap.lastKey();
+        }
+        return 0;
+    }
+    
+    public int popMax() {
+        if (!treemap.isEmpty()) {
+            int key = treemap.lastKey();
+            LinkedList<Node> treeList = treemap.get(key);
+            Node node = treeList.removeLast();
+            if (treeList.isEmpty()) {
+                treemap.remove(key);
+            }
+            list.remove(node);
+            return node.value;
+        }
+        return 0;
+    }
+}
+
+/*
+    Don't mix-use of interface method.
+For linkedlist
+Deque: push <-> pop push and pop are modifying the head of list
+        add <-> removeLast() are mofifying the tail of list
+Queue: offer <-> poll offer adds to the tail and poll gets from the head
+Common: add is adding to the tail, remove is removing from head
+List: add <-> remove(list.size()-1)
+   */
