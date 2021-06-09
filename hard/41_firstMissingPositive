@@ -1,0 +1,45 @@
+class Solution {
+    public int firstMissingPositive(int[] nums) {
+        if (nums == null || nums.length == 0) return 0;
+        // first need a number with pos and neg as placeholder for 
+        // all numbers we don't care: negative and zero. 
+        // We choose 1, so first check if 1 exists
+        boolean findOne = false;
+        for (int i = 0; i < nums.length; i++){
+            if (nums[i] == 1) {
+                findOne = true;
+                break;
+            }
+        }
+        if (findOne == false) {
+            return 1;
+        }
+        // Replace ignorable number with 1. Can't use 0 because it has no negative
+        for (int i = 0; i < nums.length; i++){
+            if (nums[i] <= 0) {
+                nums[i] = 1;
+            }
+        }
+        // Use value as index. Note value could be negative so we need abs
+        // When seeing a positive number, set the value with it as index to negative
+        for (int i = 0; i < nums.length; i++){
+            int pos = Math.abs(nums[i]);
+            if (pos > 0 && pos - 1 < nums.length) {
+                nums[pos-1] = -Math.abs(nums[pos-1]);
+            }
+        }
+        // Find first index with positive value. Note we should return index+1
+        for (int i = 0; i < nums.length; i++){
+            if (nums[i] > 0) {
+                return i+1;
+            }
+        }
+        return nums.length+1;
+    }
+}
+
+/*
+1. for an array in size n. The missing number has to be between 1 and n inclusive
+2. Use negative sign as a mark for existance
+3. 0 is special since it has no positive and negative 
+   */
