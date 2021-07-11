@@ -1,0 +1,31 @@
+class Solution {
+    public int[][] merge(int[][] intervals) {
+        if (intervals == null || intervals.length == 0 || intervals[0].length != 2) return null;
+        Arrays.sort(intervals, (a, b) -> {
+           return a[0] - b[0];
+        });
+        List<int[]> result = new ArrayList<>();
+        int[] currInterval = null;
+        for (int i = 0; i < intervals.length; i++){
+            if (currInterval == null){
+                currInterval = intervals[i];
+            } else if (currInterval[1] < intervals[i][0]) {
+                result.add(currInterval);
+                currInterval = intervals[i];
+            } else if (currInterval[1] < intervals[i][1]) {
+                currInterval[1] = intervals[i][1];
+            }
+        }
+        result.add(currInterval);
+        return result.toArray(new int[0][0]);
+    }
+}
+
+/*
+1. Initial array as null: int[] array = null
+2. Array is used as a type: List<int[]>
+3. Lambda expression to substitute comparator:
+    (a, b) -> { return a-b }; negative: same order. Positive: reverse order.
+4. List to Array: list.toArray(T t):
+    e.g Object[] cannot be converted to int[][] -> toArray(new int[0][0]); // Size doesn't matter
+   */

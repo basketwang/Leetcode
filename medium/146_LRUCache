@@ -1,0 +1,73 @@
+class LRUCache {
+    class Node {
+        int value;
+        int key;
+        Node next;
+        Node prev;
+        public Node (int key, int val) {
+            value = val;
+            this.key = key;
+        }
+    }
+    private int capacity;
+    private int size;
+    private Node head;
+    private HashMap<Integer, Node> map;
+    
+    public LRUCache(int capacity) {
+        this.capacity = capacity;
+        head = new Node(0, 0);
+        head.next = head;
+        head.prev = head;
+        map = new HashMap<>();
+    }
+    
+    public int get(int key) {
+        if (!map.containsKey(key)) {
+            return -1;
+        }
+        moveNodeToRecent(map.get(key));
+        return map.get(key).value;
+    }
+    
+    public void put(int key, int value) {
+        if (!map.containsKey(key)) {
+            Node node = new Node(key, value);
+            map.put(key, node);
+            addNodeToList(node);
+            size++;
+            if (size > capacity) {
+                Node headNode = head.next;
+                removeNodeFromList(head.next);
+                map.remove(headNode.key);
+                size--;
+            }
+        } else {
+            map.get(key).value = value;
+            moveNodeToRecent(map.get(key));
+        }
+    }
+    
+    private void removeNodeFromList(Node node) {
+        node.prev.next = node.next;
+        node.next.prev = node.prev;
+    }
+    
+    private void addNodeToList(Node node) {
+        node.next = head;
+        node.prev = head.prev;
+        head.prev.next = node;
+        head.prev = node;
+    }
+
+    private void moveNodeToRecent(Node node) {
+        removeNodeFromList(node);
+        addNodeToList(node);
+    }
+}
+
+/**
+ * List won't expose its node. List<Node> has internal node 
+ * wrapped around the self-defined Node with two pointers.
+ * So Remove(object) will take O(n) instead of O(1)
+ */
