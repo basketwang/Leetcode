@@ -1,0 +1,35 @@
+class Solution {
+    public int[][] generateMatrix(int n) {
+        int[][] res = new int[n][n];
+        int direction = 0;
+        int i = 0; int j = 0;
+        for (int num = 1; num <= n*n; num++) {
+            res[i][j] = num;
+            if (shouldMakeTurn(direction, i, j, res)) {
+                direction = (direction + 1) % 4;
+            }
+            if (direction == 0) {
+                j++;
+            } else if (direction == 1) {
+                i++;
+            } else if (direction == 2) {
+                j--;
+            } else {
+                i--;
+            }
+        }
+        return res;
+    }
+    public boolean shouldMakeTurn(int direction, int i, int j, int[][]matrics) {
+        int n = matrics.length;
+        if (direction == 0) {
+            return j == n-1 || matrics[i][j+1] != 0;
+        } else if (direction == 1) {
+            return i == n-1 || matrics[i+1][j] != 0;
+        } else if (direction == 2){
+             return j == 0 || matrics[i][j-1] != 0;
+        } else {
+            return i == 0 || matrics[i-1][j] != 0;
+        }
+    }
+}

@@ -1,0 +1,47 @@
+class RandomizedSet {
+
+    ArrayList<Integer> array;
+    HashMap<Integer, Integer> map;
+    /** Initialize your data structure here. */
+    public RandomizedSet() {
+        array = new ArrayList<>();
+        map = new HashMap<>();
+    }
+    
+    /** Inserts a value to the set. Returns true if the set did not already contain the specified element. */
+    public boolean insert(int val) {
+        if (map.containsKey(val)) {
+            return false;
+        }
+        array.add(val);
+        map.put(val, array.size()-1);
+        return true;
+    }
+    
+    /** Removes a value from the set. Returns true if the set contained the specified element. */
+    public boolean remove(int val) {
+        if (!map.containsKey(val)) {
+            return false;
+        }
+        int removed_index = map.remove(val);
+        int lastElemValue = array.get(array.size()-1);
+        array.set(removed_index, lastElemValue);
+        map.put(lastElemValue, removed_index);
+        array.remove(array.size()-1);
+        map.remove(val);
+        return true;
+    }
+    
+    /** Get a random element from the set. */
+    public int getRandom() {
+        Random rand = new Random();
+        int idx = rand.nextInt(array.size());
+        return array.get(idx);
+    }
+}
+
+/* O(1) time complexity is the hint to use arrayList with HashMap
+   Notice that removing element from arrayList will change the indexes of all following element
+   The way to handle it is to replace the element with the last element. 
+   Remember to update and remove element from map at the same time
+   */

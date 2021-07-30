@@ -1,0 +1,37 @@
+class Solution {
+    public List<String> letterCombinations(String digits) {
+        List<String> res = new LinkedList<>();
+        if (digits == null || digits.length() == 0) return res;
+        HashMap<Character, List<Character>> map = buildMap();
+        DFS(digits.toCharArray(), 0, res, "", map);
+        return res;
+        
+    }
+
+    private void DFS(char[] chars, int index, List<String>res, String str, HashMap<Character, List<Character>> map) {
+        if (index == chars.length) {
+            res.add(str);
+            return;
+        }
+        char digit = chars[index];
+        List<Character> clist = map.get(digit);
+        if (clist != null) {
+            for (int i = 0; i < clist.size(); i++) {
+                DFS(chars, index+1, res, str + clist.get(i), map);
+            }
+        }
+    }
+    
+    private HashMap buildMap() {
+        HashMap<Character, List<Character>> map = new HashMap<>();
+        map.put('2', new LinkedList<Character>(Arrays.asList('a', 'b', 'c')));
+        map.put('3', new LinkedList<Character>(Arrays.asList('d', 'e', 'f')));
+        map.put('4', new LinkedList<Character>(Arrays.asList('g', 'h', 'i')));
+        map.put('5', new LinkedList<Character>(Arrays.asList('j', 'k', 'l')));
+        map.put('6', new LinkedList<Character>(Arrays.asList('m', 'n', 'o')));
+        map.put('7', new LinkedList<Character>(Arrays.asList('p', 'q', 'r', 's')));
+        map.put('8', new LinkedList<Character>(Arrays.asList('t', 'u', 'v')));
+        map.put('9', new LinkedList<Character>(Arrays.asList('w', 'x', 'y', 'z')));
+        return map;
+    }
+}

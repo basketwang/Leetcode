@@ -1,0 +1,23 @@
+class Solution {
+    public int[] productExceptSelf(int[] nums) {
+        if (nums == null || nums.length == 0) return null;
+        int[] res = new int[nums.length];
+        // left to right
+        res[0] = 1;
+        for (int i = 1; i < nums.length; i++) {
+            res[i] = res[i-1] * nums[i-1];
+        }
+        // right to left
+        int prod = 1;
+        for (int i = nums.length - 2; i >= 0; i--){
+            prod *= nums[i+1];
+            res[i] = res[i] * prod;
+        }
+        return res;
+    }
+}
+/* return array is a must-have. Doesn't count for space complexity
+   Two pass to achieve O(n), O(1)
+   Note res[i] and prod doesn't count nums[i] therefore their initial values are 1
+   This method can handle single 0 and multiple 0 cases
+   */

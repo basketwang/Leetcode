@@ -1,0 +1,63 @@
+class UndergroundSystem {
+    class Record {
+        public int count;
+        public int timeSum;
+        public Record(int count, int t) {
+            this.count = count;
+            timeSum = t;
+        }
+    }
+
+    class Trip {
+        public int id;
+        public String startStation;
+        public int startTime;
+        
+        public Trip (int id, String station, int t) {
+            this.id = id;
+            startStation = station;
+            startTime = t;
+        }
+    }
+    
+    private HashMap<Pair, Record> recordMap;
+    private HashMap<Integer, Trip> map;
+    public UndergroundSystem() {
+        recordMap = new HashMap<>();
+        map = new HashMap<>();
+    }
+    
+    public void checkIn(int id, String stationName, int t) {
+        if (map.containsKey(id)) {
+            return;
+        }
+        map.put(id, new Trip(id, stationName, t));
+    }
+    
+    public void checkOut(int id, String stationName, int t) {
+        if (!map.containsKey(id)) {
+            return;
+        }
+        Trip trip = map.remove(id);
+        Pair<String, String> key = new Pair(trip.startStation, stationName);
+        if (recordMap.containsKey(key)) {
+            Record curr = recordMap.get(key);
+            curr.count++;
+            curr.timeSum += (t - trip.startTime);
+        } else {
+            Record curr = new Record(1, t - trip.startTime);
+            recordMap.put(key, curr);
+        }
+    }
+    
+    public double getAverageTime(String startStation, String endStation) {
+        Pair<String, String> key = new Pair(startStation, endStation);
+        Record curr = recordMap.get(key);
+        if (curr == null) return 0;
+        return curr.timeSum / (double)curr.count;
+    }
+}
+
+/*
+   Pair<> is a java object to hold key value pairs
+ */

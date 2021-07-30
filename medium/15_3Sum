@@ -1,0 +1,56 @@
+class Solution {
+    public List<List<Integer>> threeSum(int[] nums) {
+        List<List<Integer>> res = new LinkedList<>();
+        if (nums == null || nums.length < 3) return res;
+        Arrays.sort(nums);
+        int base = 0;
+        while (base < nums.length-2) {
+            int target = - nums[base];
+            int start = base+1;
+            int end = nums.length - 1;
+            while (start + 1 < end) {
+                if (nums[start] + nums[end] == target){
+                    List<Integer> entry = new LinkedList<>();
+                    entry.add(nums[base]);
+                    entry.add(nums[start]);
+                    entry.add(nums[end]);
+                    res.add(entry);
+                    start = moveRight(start, nums);
+                    end = moveLeft(end, nums);
+                } else if (nums[start] + nums[end] > target) {
+                    end = moveLeft(end, nums);
+                } else {
+                    start = moveRight(start, nums);
+                }
+            }
+            if (start + 1 == end && nums[start] + nums[end] == target) {
+                    List<Integer> entry = new LinkedList<>();
+                    entry.add(nums[base]);
+                    entry.add(nums[start]);
+                    entry.add(nums[end]);
+                    res.add(entry);
+            }
+            base = moveRight(base, nums);
+        }
+        return res;
+    }
+    private int moveLeft(int index, int[] nums) {
+        while(index - 1 >= 0 && nums[index] == nums[index-1]) {
+            index--;
+        }
+        index--;
+        return index;
+    }
+    private int moveRight(int index, int[] nums) {
+        while(index + 1 < nums.length && nums[index] == nums[index+1]) {
+            index++;
+        }
+        index++;
+        return index;
+    }
+}
+/* Sort array
+   Set base number, and use two pointers method to find the other two numbers
+   Need to dedup while moving all three pointers, careful of overflow
+
+   */

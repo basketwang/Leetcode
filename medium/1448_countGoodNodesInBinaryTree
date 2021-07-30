@@ -1,0 +1,28 @@
+class Solution {
+    public int goodNodes(TreeNode root) {
+        if (root == null) return 0;
+        return DFS(root, null);
+        
+    }
+    private int DFS(TreeNode node, Integer max) {
+        if (node == null) return 0;
+        int count = 0;
+        if (max == null || node.val >= max){
+            count ++;
+        }
+        if (max == null) {
+            max = node.val;
+        } else {
+            max = Math.max(max, node.val);
+        }
+        count += DFS(node.left, max);
+        count += DFS(node.right, max);
+        return count;
+    }
+}
+
+/* Integer is a class but passed by Value.
+   Integer is immutable and a new instance is created every time
+   No need to use a pq to store previous node. Here it process current
+   node first, then change max and process its children
+*/
