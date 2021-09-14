@@ -1,0 +1,52 @@
+class Solution {
+    public List<Integer> spiralOrder(int[][] matrix) {
+        List<Integer> res = new LinkedList<>();
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) return res;
+        int leftBound = 0;
+        int rightBound = matrix[0].length - 1;
+        int topBound = 0;
+        int bottomBound = matrix.length - 1;
+        int r = 0, c = 0;
+        // 0: right, 1: down, 2: right, 3: up
+        int direction = 0;
+        
+
+        while (c >= leftBound && c <= rightBound && r >= topBound && r <= bottomBound) {
+            res.add(matrix[r][c]);
+            if (direction == 0) {
+                if (c == rightBound) {
+                    direction = 1;
+                    r++;
+                    topBound++;
+                } else {
+                    c++;
+                }
+            } else if (direction == 1) {
+                if (r == bottomBound) {
+                    direction = 2;
+                    c--;
+                    rightBound--;
+                } else {
+                    r++;
+                }
+            } else if (direction == 2){
+                if (c == leftBound) {
+                    direction = 3;
+                    r--;
+                    bottomBound--;
+                } else {
+                    c--;
+                }
+            } else {
+                if (r == topBound) {
+                    direction = 0;
+                    c++;
+                    leftBound++;
+                } else {
+                    r--;
+                }
+            }
+        }
+        return res;
+    }
+}

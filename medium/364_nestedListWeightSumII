@@ -1,0 +1,30 @@
+class Solution {
+    public int depthSumInverse(List<NestedInteger> nestedList) {
+        if (nestedList == null || nestedList.size() == 0) return 0;
+        Queue<NestedInteger> queue = new LinkedList<>();
+        Stack<Integer> levelSum = new Stack<>();
+        for (NestedInteger nest : nestedList) {
+            queue.offer(nest);
+        }
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            int sum = 0;
+            for (int i = 0; i < size; i++) {
+                NestedInteger nest = queue.poll();
+                if (nest.isInteger()) {
+                    sum+= nest.getInteger();
+                } else {
+                    queue.addAll(nest.getList());
+                }
+            }
+            levelSum.push(sum);
+        }
+        int m = 1;
+        int result = 0;
+        while (!levelSum.isEmpty()) {
+            result += levelSum.pop() * m;
+            m++; 
+        }
+        return result;
+    }
+}

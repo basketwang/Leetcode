@@ -1,0 +1,32 @@
+class Solution {
+    public int minKnightMoves(int x, int y) {
+// 605 = (300 + 2) * 2+ 1
+// -300 <= x, y <= 300 AND last step could be 2 distance from the target x,y
+
+        boolean[][] visited = new boolean[605][605];
+        int[][] offsets = {{1, 2}, {1, -2}, {-1, 2}, {-1, -2}, {2, 1}, {2, -1}, {-2, 1}, {-2, -1}};
+        
+        LinkedList<int[]> queue = new LinkedList<>();
+        queue.offer(new int[]{0, 0});
+        visited[302][302] = true;
+        int step = 0;
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                int[] loc = queue.poll();
+                if (loc[0] == x && loc[1] == y){
+                    return step;
+                }                
+                for (int[] offset : offsets) {
+                    int[] next = new int[]{loc[0] + offset[0], loc[1] + offset[1]};
+                    if (!visited[next[0] + 302][next[1] + 302]) {
+                        visited[next[0] + 302][next[1] + 302] = true;
+                        queue.offer(next);
+                    }
+                }
+            }
+            step++;
+        }
+        return step;
+    }
+}

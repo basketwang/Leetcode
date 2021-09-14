@@ -1,0 +1,29 @@
+class Solution {
+    public boolean wordBreak(String s, List<String> wordDict) {
+        if (s == null || s.length() == 0 || wordDict == null || wordDict.size() == 0) return false;
+        HashSet<String> set = new HashSet<>();
+        for (String word: wordDict) {
+            set.add(word);
+        }
+        return iter(s, set, new HashMap<String, Boolean>());
+    }
+    private boolean iter(String s, Set<String> set, HashMap<String, Boolean> cache) {
+        if (s == null || s.length() == 0) {
+            return true;
+        }
+        if (cache.containsKey(s)) {
+            return cache.get(s);
+        }
+        for (int i = 1; i <= s.length(); i++) {
+            String str = s.substring(0, i);
+            if (set.contains(str)) {
+                if (iter(s.substring(i), set, cache)) {
+                    cache.put(s, true);
+                    return true;
+                }
+            }
+        }
+        cache.put(s, false);
+        return false;
+    }
+}

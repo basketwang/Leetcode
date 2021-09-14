@@ -1,0 +1,34 @@
+class Solution {
+    int max = 0;
+    int currArea = 0;
+    public int maxAreaOfIsland(int[][] grid) {
+        if (grid == null || grid.length == 0 || grid[0].length == 0) return 0;
+        for (int r = 0; r < grid.length; r++) {
+            for (int c = 0; c < grid[0].length; c++) {
+                if (grid[r][c] == 1) {
+                    currArea = 0;
+                    iterate(grid, r, c);
+                    max = Math.max(max, currArea);
+                }
+            }
+        }
+        return max;
+    }
+    private void iterate(int[][] grid, int r, int c) {
+        if (grid[r][c] == 0) return;
+        grid[r][c] = 0;
+        currArea++;
+        if (r - 1 >= 0) {
+            iterate(grid, r-1, c);
+        }
+        if (r + 1 < grid.length) {
+            iterate(grid, r+1, c);
+        }
+        if (c - 1 >= 0) {
+            iterate(grid, r, c - 1);
+        }
+        if (c + 1 < grid[0].length) {
+            iterate(grid, r, c + 1);
+        }
+    }
+}

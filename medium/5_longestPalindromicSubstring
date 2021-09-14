@@ -1,0 +1,28 @@
+class Solution {
+    public String longestPalindrome(String s) {
+        if (s == null || s.length() < 2) return s;
+        String result = null;
+        for (int mid = 0; mid < s.length(); mid++) {
+            String res1 = getPalindromicStringCenterBy(mid, mid, s);
+            String res2 = getPalindromicStringCenterBy(mid, mid+1, s);
+            String res = res1.length() > res2.length() ? res1 : res2;
+            if (result == null || result.length() < res.length()) {
+                result = res;
+            }
+        }
+        return result;
+    }
+    
+    private String getPalindromicStringCenterBy(int midLeft, int midRight, String str) {
+        int left = midLeft;
+        int right = midRight;
+        while (left >= 0 && right < str.length()) {
+            if (str.charAt(left) != str.charAt(right)) {
+                break;
+            }
+            left--;
+            right++;
+        }
+        return str.substring(left+1, right);
+    }
+}

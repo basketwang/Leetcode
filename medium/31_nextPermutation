@@ -1,0 +1,32 @@
+class Solution {
+    public void nextPermutation(int[] nums) {
+        if (nums == null || nums.length < 2) return;
+        int targetNumIdx = nums.length - 1;
+        for (int i = nums.length -2; i >= 0; i--) {
+            if (nums[i] < nums[i+1]) {
+                targetNumIdx = i;
+                break;
+            }
+        }
+        if (targetNumIdx == nums.length - 1) {
+            Arrays.sort(nums);
+            return;
+        }
+        int switchIdx = findMinNumLargerThanTarget(nums, targetNumIdx);
+        int tmp = nums[switchIdx];
+        nums[switchIdx]= nums[targetNumIdx];
+        nums[targetNumIdx] = tmp;
+        
+        Arrays.sort(nums, targetNumIdx + 1, nums.length);
+    }
+    private int findMinNumLargerThanTarget(int[] nums, int targetNumIdx) {
+        int idx = targetNumIdx + 1;
+        // From targetNumIdx, find the min num larger than the targeted num to switch
+        for (int i = targetNumIdx + 1; i < nums.length; i++) {
+            if (nums[i] > nums[targetNumIdx] && nums[i] <= nums[idx]) {
+                idx = i;
+            }
+        }
+        return idx;
+    }
+}

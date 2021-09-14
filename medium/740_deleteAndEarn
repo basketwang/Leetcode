@@ -1,0 +1,26 @@
+class Solution {
+    public int deleteAndEarn(int[] nums) {
+        if (nums == null || nums.length == 0) return 0;
+        int min = 0;
+        int max = 0;
+        for (int num : nums) {
+            min = Math.min(num, min);
+            max = Math.max(num, max);
+        }
+        // arrays with index representing the num
+        // and value representing the num * count, which is points
+        int[] points = new int[max - min + 1];
+        for (int num: nums) {
+            points[num - min] += num;
+        }
+        if (points.length == 1) return points[0];
+        int maxCurr = points[0];
+        int maxPre = 0;
+        for (int i = 1; i < points.length; i++) {
+            int newMax = Math.max(maxCurr, maxPre + points[i]);
+            maxPre = maxCurr;
+            maxCurr = newMax;
+        }
+        return maxCurr;
+    }
+}

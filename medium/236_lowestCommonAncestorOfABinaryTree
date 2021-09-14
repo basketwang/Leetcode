@@ -1,0 +1,21 @@
+class Solution {
+    TreeNode ans = null;
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+       DFS(root, p, q); 
+        return ans;
+    }
+    public boolean DFS(TreeNode node, TreeNode p, TreeNode q){
+        if (node == null) return false;
+        boolean left = DFS(node.left, p, q);
+        boolean right = DFS(node.right, p, q);
+        if (left && right) {
+            ans = node;
+            return true;
+        } else if ((node == p || node == q) && (left || right) ) {
+            ans = node;
+            return true;
+        } else {
+            return (node == p || node == q || left || right);
+        }
+    }
+}

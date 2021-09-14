@@ -1,0 +1,31 @@
+class Solution {
+    public String removeDuplicates(String s, int k) {
+        if (s == null || s.length() < k) return s;
+        char preChar = ' ';
+        StringBuilder sb = new StringBuilder();
+        Stack<Integer> stack = new Stack<>();
+        for (int i = 0; i < s.length(); i++) {
+            sb.append(s.charAt(i));
+            if (preChar != s.charAt(i)) {
+                stack.push(1);
+            } else {
+                int num = stack.pop() + 1;
+                if (num >= k) {
+                    sb.delete(sb.length() - num , sb.length());
+                } else {
+                    stack.push(num);    
+                }
+            }
+            if (sb.length() == 0) {
+                preChar = ' ';
+            } else {
+                preChar = sb.charAt(sb.length() - 1);
+            }
+            
+        }
+        return sb.toString();
+    }
+}
+
+/* The pattern is like moving back in some condition, should think of stack as a direction
+   */

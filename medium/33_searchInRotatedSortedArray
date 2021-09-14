@@ -1,0 +1,46 @@
+class Solution {
+    public int search(int[] nums, int target) {
+        if (nums == null || nums.length == 0) return -1;
+        int left = 0;
+        int right = nums.length - 1;
+        while (left + 1 < right) {
+            System.out.println("p:" + left + " " + right);
+            int mid = left + (right - left) / 2;
+            int midValue = nums[mid];
+            if (midValue == target) return mid;
+            if (midValue > nums[left] && midValue < nums[right]) {
+                // sorted
+                if (midValue > target) {
+                    right = mid;
+                } else {
+                    left = mid;
+                }
+            } else if (midValue >= nums[left] && midValue >= nums[right]) {
+                if (midValue > target) {
+                    if (nums[left] <= target) {
+                        right = mid;
+                    } else {
+                        left = mid;
+                    }
+                } else {
+                    left = mid;
+                }
+            } else if (midValue <= nums[left] && midValue <= nums[right]) {
+                if (midValue < target) {
+                    if (nums[right] >= target) {
+                        left = mid;
+                    } else {
+                        right = mid;
+                    }
+                } else {
+                    right = mid;
+                }
+            } else {
+                // Should not have such case
+            }
+        }
+        if (nums[left] == target) return left;
+        if (nums[right] == target) return right;
+        return -1;       
+    }
+}

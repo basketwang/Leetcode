@@ -1,0 +1,47 @@
+class Solution {
+    class Element {
+        public char c;
+        public int num;
+        public Element(char c, int num) {
+            this.c = c;
+            this.num = num;
+        }
+    }
+    public int expressiveWords(String s, String[] words) {
+        if (s == null || s.length() == 0 || words == null || words.length == 0) return 0;
+        // char -> int
+        Element[] sarr = parseString(s);
+        int res = 0;
+        for (String word: words) {
+            Element[] warr = parseString(word);
+            if (sarr.length != warr.length) continue;
+            boolean match = true;
+            for (int i = 0; i < sarr.length; i++) {
+                if (sarr[i].c != warr[i].c || sarr[i].num < warr[i].num || ( sarr[i].num != warr[i].num && sarr[i].num < 3)) {
+                    match = false;
+                    break;
+                }
+            }
+            if (match == true) {
+                res++;
+            }
+        }
+        return res;
+    }
+    
+    private Element[] parseString(String s) {
+        int i = 0;
+        ArrayList<Element> list = new ArrayList<>();
+        while (i < s.length()){
+            int n = 1;
+            char c = s.charAt(i);
+            i++;
+            while (i < s.length() && c == s.charAt(i)) {
+                i++;
+                n++;
+            }
+            list.add(new Element(c, n));            
+        }
+        return list.toArray(new Element[1]);
+    }
+}

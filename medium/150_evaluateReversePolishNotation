@@ -1,0 +1,25 @@
+class Solution {
+    public int evalRPN(String[] tokens) {
+       Stack<Integer> stack = new Stack<>();
+       for (String token: tokens) {
+           if (token.equals("-") || token.equals("+") ||token.equals("*") ||token.equals("/") ) {
+                int right = stack.pop();
+                int left = stack.pop();
+                int res = 0;
+                if (token.equals("-") ) {
+                   res = left - right; 
+                } else if (token.equals("+")){
+                   res = left + right; 
+                } else if (token.equals("*")){
+                   res = left * right; 
+                } else if (token.equals("/")){
+                   res = left / right; 
+                } 
+               stack.push(res);
+           } else { // digit
+             stack.push(Integer.parseInt(token)); 
+           }
+       }
+        return stack.pop();
+    }
+}

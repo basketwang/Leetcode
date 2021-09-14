@@ -1,0 +1,24 @@
+class Solution {
+    public List<String> generateParenthesis(int n) {
+        if (n <= 0) return null;
+        ArrayList<String> res = new ArrayList<>();
+        iter(n, n, "", res);
+        return res;
+    }
+    private void iter(int left, int right, String str, List<String> res) {
+        if (left > right) return;
+        if (left == 0) {
+            for (int i = 0; i < right; i++) {
+                str += ")";
+            }
+            res.add(str);
+        } else {
+            iter(left - 1, right, str+"(", res);
+            iter(left, right - 1, str+")", res);
+        }
+    }
+}
+/*
+add one pair won't be only append () ahead and behind and cover the whole string only
+e.g (())(()) when n == 4
+*/
