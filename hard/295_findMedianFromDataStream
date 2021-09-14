@@ -1,0 +1,81 @@
+class MedianFinder {
+
+    /** initialize your data structure here. */
+    PriorityQueue<Integer> large;
+    PriorityQueue<Integer> small;
+    public MedianFinder() {
+        large = new PriorityQueue<>();
+        small = new PriorityQueue<>((a, b) -> {
+            return b - a;
+        });
+    }
+    
+    public void addNum(int num) {
+        if (large.size() == 0 || num >= large.peek()) {
+            large.offer(num);
+        } else if (small.size() == 0 || num <= small.peek()) {
+            small.offer(num);
+        } else {
+            large.offer(num);
+        }
+        while(large.size() > small.size() + 1) { 
+            small.offer(large.poll());
+        }
+        while (small.size() > large.size() + 1) {
+            large.offer(small.poll());
+        }
+    }
+    
+    public double findMedian() {
+        if (large.size() > small.size()) {
+            return large.peek();
+        } else if (large.size() < small.size()) {
+            return small.peek();
+        } else {
+            return (large.peek() + small.peek()) / (double)2.0;
+        }
+    }
+}
+
+/*
+class MedianFinder {
+
+    ArrayList<Integer> list;
+    public MedianFinder() {
+        list = new ArrayList<>();
+    }
+    
+    public void addNum(int num) {
+        int index = findIndex(num);
+        list.add(index, num);
+    }
+    
+    public double findMedian() {
+        int size = list.size();
+        return (list.get(size / 2) + list.get((size - 1) / 2)) / (double)2.0;
+    }
+    private int findIndex(int num) {
+        if (list.isEmpty()) {
+            return 0;
+        }
+        int start = 0;
+        int end = list.size() - 1;
+        while (start + 1 < end) {
+            int mid = start + (end - start) / 2;
+            if (list.get(mid) > num) {
+                end = mid;
+            } else if (list.get(mid) < num){
+                start = mid;
+            } else {
+                return mid;
+            }
+        }
+        if (list.get(start) > num) {
+            return start;
+        } else if (list.get(end) > num ) { // num in the middle
+            return end;
+        } else {
+            return end + 1;
+        }
+    }
+}

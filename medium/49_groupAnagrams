@@ -1,0 +1,24 @@
+class Solution {
+    public List<List<String>> groupAnagrams(String[] strs) {
+        List<List<String>> res = new LinkedList<>();
+        if (strs == null || strs.length == 0) return res;
+        HashMap<String, List<String>> map = new HashMap<>(); 
+        for (String str : strs) {
+            String key = sortString(str);
+            if (!map.containsKey(key)) {
+                map.put(key, new LinkedList<String>());
+            }
+            map.get(key).add(str);
+        }
+        for (Map.Entry<String, List<String>> entry : map.entrySet()) {
+            res.add(entry.getValue());
+        }
+        return res;
+    }
+    private String sortString(String str) {
+        // String contains only lowercase letters
+        char[] cArr = str.toCharArray();
+        Arrays.sort(cArr);
+        return new String(cArr);
+    }
+}

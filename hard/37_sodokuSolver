@@ -1,0 +1,66 @@
+class Solution {
+    public void solveSudoku(char[][] board) {
+        fillNextPosition(board, 0, 0);
+    }
+    
+    public boolean fillNextPosition(char[][] board, int x, int y) {
+        // find next blank
+//        printBoard(board);
+        int r = x;
+        int c = y;
+        while (r < 9) {
+            if (!isNumber(board[r][c])) {
+                break;
+            }
+            c++;
+            if (c >= 9){
+                r++;
+                c = 0;
+            }
+        }
+        if (r >= 9) return true; // No more to fill;
+        
+        for (int i = 1; i <= 9; i++) {
+            if (isValidNumber(board, i, r, c)) {
+                board[r][c] = (char)(i + '0');
+                boolean filled = fillNextPosition(board, r, c);// fill loc rc. will find next blank
+                if (filled) {
+                    return true;
+                }
+                board[r][c] = '.';
+            } 
+        }
+        return false;
+    }
+    
+    private boolean isNumber(char c) {
+        return c >= '1' && c <= '9';
+    }
+    private boolean isValidNumber(char[][] board, int num, int r, int c) {
+        // horizontal
+        for (int i = 0; i < 9; i++) {
+            if (board[r][i] - '0' == num) return false;
+            if (board[i][c] - '0' == num) return false;
+        }
+        // Squre
+        int rowOff = r/3*3;
+        int colOff = c/3*3;
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j< 3; j++) {
+                if (board[i+rowOff][j+colOff] - '0' == num) return false;
+            }
+        }
+        return true;
+    }
+
+    private void printBoard(char[][] board) {
+        for (char[] r : board) {
+            for (char c : r) {
+                System.out.print(c);
+                System.out.print(" , ");
+            }
+            System.out.println();
+        }
+        System.out.println("-=----------");
+    }
+}

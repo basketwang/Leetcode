@@ -1,0 +1,26 @@
+class Solution {
+    public int eraseOverlapIntervals(int[][] intervals) {
+       int[] currInterval = null;
+        int res = 0;
+        Arrays.sort(intervals, (a, b) -> {
+            return a[0] - b[0];
+        });
+        // After sorting. only three cases could happen
+        for (int[] interval : intervals) {
+            if (currInterval == null) {
+                currInterval = interval;
+                continue;
+            }
+            if (currInterval[1] <= interval[0]) { // no overlap
+               currInterval = interval; 
+            } else if (currInterval[1] >= interval[1]) { // curr cover the whole interval
+                currInterval = interval;
+                res++;
+            } else { //curr covers part of interval 
+                // in this case, removing the later one will always the best choice
+               res++; 
+            }
+        }
+        return res;
+    }
+}

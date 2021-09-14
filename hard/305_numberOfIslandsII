@@ -1,0 +1,72 @@
+class Solution {
+    public static int count = 0;
+    public List<Integer> numIslands2(int m, int n, int[][] positions) {
+        LinkedList<Integer> res = new LinkedList<>();
+        if (positions == null) return res;
+        int[] islandsParent = new int[m*n];
+        int count = 0;
+        Arrays.fill(islandsParent, -1);
+        
+        for (int i = 0; i < positions.length; i++) {
+            int[] position = positions[i];
+            int pos = position[0] * n + position[1];
+            if (islandsParent[pos] != -1) {
+                res.add(count);
+                continue;
+            }
+            islandsParent[pos] = pos;
+            count++;
+            if (position[0] - 1 >= 0) {
+                int p1 = (position[0] - 1) * n + position[1];
+                if (islandsParent[p1] != -1) {
+                    if (union(islandsParent, pos, p1)) {
+                        count--;
+                    }
+                }
+            }
+            if (position[0] + 1 < m) {
+                int p1 = (position[0] + 1) * n + position[1];
+                if (islandsParent[p1] != -1) {
+                    if (union(islandsParent, pos, p1)) {
+                        count--;
+                    }
+                }
+            }
+            if (position[1] - 1 >= 0) {
+                int p1 = (position[0]) * n + position[1] - 1;
+                if (islandsParent[p1] != -1) {
+                    if (union(islandsParent, pos, p1)) {
+                        count--;
+                    }
+                }
+            }
+            if (position[1] + 1 < n) {
+                int p1 = (position[0]) * n + position[1] + 1;
+                if (islandsParent[p1] != -1) {
+                    if (union(islandsParent, pos, p1)) {
+                        count--;
+                    }
+                }
+            }
+            res.add(count);
+        }
+        return res;
+    }
+    private int findRoot(int[] islandsParent, int pos) {
+        if (islandsParent[pos] == pos) {
+            return pos;
+        }
+        return findRoot(islandsParent, islandsParent[pos]);
+    }
+    private boolean union(int[] islandsParent, int pos1, int pos2) {
+        int root1 = findRoot(islandsParent, pos1);
+        int root2 = findRoot(islandsParent, pos2);
+        if (root1 != root2) {
+            islandsParent[root1] = root2;
+            return true;
+        }
+        return false;
+    }
+   
+}
+// Union Find 

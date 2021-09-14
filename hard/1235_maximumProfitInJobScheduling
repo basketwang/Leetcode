@@ -1,0 +1,73 @@
+class Solution {
+    public int jobScheduling(int[] startTime, int[] endTime, int[] profit) {
+        int njob = startTime.length;
+         int[][] jobs = new int[njob][3];
+        for (int i = 0; i < njob; i++) {
+            jobs[i][0] = startTime[i];
+            jobs[i][1] = endTime[i];
+            jobs[i][2] = profit[i];
+        }
+        Arrays.sort(jobs, (a, b) -> {
+            return a[1] - b[1];
+        });
+        int n = jobs.length;
+        int[] maxProf = new int[n];
+        for (int i = 0; i < n; i++) {
+            int[] job = jobs[i];
+            int prevIndex = findFinishedJobIndex(jobs, job[0]);
+            int currMax = i > 0 ? maxProf[i-1] : 0;
+            if (prevIndex >= 0) {
+                currMax = Math.max(currMax, maxProf[prevIndex] + job[2]);
+            } else {
+                currMax = Math.max(currMax, job[2]);
+            }
+            maxProf[i] = currMax;
+        }
+        return maxProf[n-1];
+    }
+    private int findFinishedJobIndex(int[][] jobs, int startTime) {
+        int start = 0;
+        int end = jobs.length;
+        while (start + 1 < end) {
+            int mid = start + (end - start) / 2;
+            if (jobs[mid][1] == startTime) {
+                return mid;
+            } else if (jobs[mid][1] < startTime) {
+                start = mid;
+            } else {
+                end = mid;
+            }
+        }
+        if (jobs[end][1] <= startTime) return end;
+        if (jobs[start][1] <= startTime) return start;
+        return -1; // Can't find
+    }
+}
+/*
+class Solution {
+    public int jobScheduling(int[] startTime, int[] endTime, int[] profit) {
+        int njob = startTime.length;
+         int[][] jobs = new int[njob][3];
+        for (int i = 0; i < njob; i++) {
+            jobs[i][0] = startTime[i];
+            jobs[i][1] = endTime[i];
+            jobs[i][2] = profit[i];
+        }
+        Arrays.sort(jobs, (a, b) -> {
+            return a[1] - b[1];
+        });
+        int n = jobs.length;
+        int maxTime = jobs[n-1][1];
+        int[] maxAtTime = new int[maxTime+1];
+        for (int i = 0; i < n; i++) {
+            int[] job = jobs[i];
+            int currMax = Math.max(maxAtTime[job[1]], maxAtTime[job[0]] + job[2]);
+            for (int j = job[1]; j <= maxTime; j++) {
+                maxAtTime[j] = currMax;
+            }
+        }
+        
+        return maxAtTime[maxTime];
+    }
+}
+*/
